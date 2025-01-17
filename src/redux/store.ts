@@ -6,7 +6,7 @@ import {
   FLUSH,
   PAUSE,
   PERSIST,
-  persistCombineReducers,
+  persistReducer,
   persistStore,
   PURGE,
   REGISTER,
@@ -18,7 +18,7 @@ const persistConfig = {
   storage,
 };
 
-const persistedAuthReducer = persistCombineReducers(persistConfig, authReducer);
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
   reducer: {
