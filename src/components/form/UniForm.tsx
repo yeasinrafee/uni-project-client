@@ -9,7 +9,6 @@ import {
 type TFormConfig = {
   defaultValues?: Record<string, any>;
 };
-
 type TFormProps = {
   onSubmit: SubmitHandler<FieldValues>;
   children: ReactNode;
