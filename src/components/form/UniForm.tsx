@@ -9,6 +9,7 @@ import {
 
 type TFormConfig = {
   defaultValues?: Record<string, any>;
+  resolver?: any;
 };
 type TFormProps = {
   onSubmit: SubmitHandler<FieldValues>;
@@ -19,12 +20,20 @@ export default function UniForm({
   onSubmit,
   children,
   defaultValues,
+  resolver,
 }: TFormProps) {
   const formConfig: TFormConfig = {};
 
+  // Check if there is any default values
   if (defaultValues) {
     formConfig['defaultValues'] = defaultValues;
   }
+
+  // Check if there is any zod resolver
+  if (resolver) {
+    formConfig['resolver'] = resolver;
+  }
+
   const methods = useForm(formConfig);
   return (
     <FormProvider {...methods}>
