@@ -5,7 +5,12 @@ import { Button, Col, Divider, Row } from 'antd';
 import UniSelect from '../../../components/form/UniSelect';
 import { bloodGroupOptions, genderOptions } from '../../../constants/global';
 import UniDatePicker from '../../../components/form/UniDatePicker';
-import { useGetAcademicSemesterQuery } from '../../../redux/features/admin/academicManagement.api';
+import {
+  useGetAcademicDepartmentQuery,
+  useGetAcademicSemesterQuery,
+} from '../../../redux/features/admin/academicManagement.api';
+import { useAddStudentMutation } from '../../../redux/features/admin/userManagement.api';
+import { toast } from 'sonner';
 
 const studentDummyData = {
   password: 'student123',
@@ -77,25 +82,41 @@ const studentDefaultValues = {
     address: '34 road, Dhaka-1230',
   },
   ///////////
-  admissionSemester: '66d4a9a94a5ff768b2ff90e0',
-  academicDepartment: '66d4a8af4a5ff768b2ff90dd',
+  // admissionSemester: '66d4a9a94a5ff768b2ff90e0',
+  // academicDepartment: '66d4a8af4a5ff768b2ff90dd',
 };
 
 export default function CreateStudent() {
   const { data: sData, isLoading: sIsLoading } =
     useGetAcademicSemesterQuery(undefined);
 
+  const { data: dData, isLoading: dIsLoading } =
+    useGetAcademicDepartmentQuery(undefined);
+
+  const [addStudent] = useAddStudentMutation();
+
   const academicSemesterOptions = sData?.data?.map((item) => ({
     value: item._id,
     label: `${item.name} ${item.year}`,
   }));
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-    // const formData = new FormData();
-    // formData.append('data', JSON.stringify(data));
+  const academicDepartmentOptions = dData?.data?.map((item) => ({
+    value: item._id,
+    label: `${item.name}`,
+  }));
 
-    // console.log(Object.fromEntries(formData));
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading('Creating Student...');
+    const formData = new FormData();
+    const studentData = {
+      password: 'student123',
+      student: data,
+    };
+    formData.append('data', JSON.stringify(studentData));
+
+    const res = await addStudent(formData);
+    toast.success('Student Created Successfully!', { id: toastId });
+    console.log(res);
   };
   return (
     <Row>
@@ -250,17 +271,18 @@ export default function CreateStudent() {
             <Col span={24} md={{ span: 12 }}>
               <UniSelect
                 disabled={sIsLoading}
-                name='academicSemester'
-                label='Academic Semester'
+                name='admissionSemester'
+                label='Admission Semester'
                 options={academicSemesterOptions}
               />
             </Col>
             <Col span={24} md={{ span: 12 }}>
-              {/* <UniInput
-                type='text'
-                name='localGuardian.occupation'
-                label='Occupation: '
-              /> */}
+              <UniSelect
+                disabled={dIsLoading}
+                name='academicDepartment'
+                label='Academic Department'
+                options={academicDepartmentOptions}
+              />
             </Col>
           </Row>
           <Button htmlType='submit'>Submit</Button>
