@@ -11,6 +11,7 @@ import {
 } from '../../../redux/features/admin/academicManagement.api';
 import { useAddStudentMutation } from '../../../redux/features/admin/userManagement.api';
 import { toast } from 'sonner';
+import UniImageInput from '../../../components/form/UniImageInput';
 
 const studentDummyData = {
   password: 'student123',
@@ -113,6 +114,7 @@ export default function CreateStudent() {
       student: data,
     };
     formData.append('data', JSON.stringify(studentData));
+    formData.append('image', data.image);
 
     const res = await addStudent(formData);
     toast.success('Student Created Successfully!', { id: toastId });
@@ -158,6 +160,9 @@ export default function CreateStudent() {
                 label='Blood Group: '
                 options={bloodGroupOptions}
               />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <UniImageInput name='image' type='file' label='Picture: ' />
             </Col>
           </Row>
 
