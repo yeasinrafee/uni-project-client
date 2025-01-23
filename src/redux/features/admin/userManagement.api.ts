@@ -50,6 +50,14 @@ const userManagementApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    blockUser: builder.mutation({
+      query: ({ userId, status }) => ({
+        url: `/users/change-status/${userId}`,
+        method: 'PATCH',
+        body: status,
+      }),
+    }),
   }),
 });
 
@@ -58,4 +66,5 @@ export const {
   useGetSingleStudentQuery,
   useUpdateStudentMutation,
   useAddStudentMutation,
+  useBlockUserMutation,
 } = userManagementApi;

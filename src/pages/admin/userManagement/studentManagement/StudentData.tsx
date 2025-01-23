@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { TQueryPram, TStudent } from '../../../../types';
 import { useGetAllStudentsQuery } from '../../../../redux/features/admin/userManagement.api';
 import { useNavigate } from 'react-router-dom';
+import BlockPopup from '../../../../components/ui/BlockPopup';
 
 export type TTableData = Pick<
   TStudent,
@@ -68,7 +69,7 @@ export default function StudentData() {
             >
               Update
             </Button>
-            <Button>Block</Button>
+            <BlockPopup item={item} />
           </Space>
         );
       },
