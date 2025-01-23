@@ -1,56 +1,58 @@
 import { FieldValues, SubmitHandler } from 'react-hook-form';
-import UniForm from '../../../components/form/UniForm';
-import UniInput from '../../../components/form/UniInput';
+
 import { Button, Col, Divider, Row } from 'antd';
-import UniSelect from '../../../components/form/UniSelect';
-import { bloodGroupOptions, genderOptions } from '../../../constants/global';
-import UniDatePicker from '../../../components/form/UniDatePicker';
+
+import { toast } from 'sonner';
 import {
   useGetAcademicDepartmentQuery,
   useGetAcademicSemesterQuery,
-} from '../../../redux/features/admin/academicManagement.api';
-import { useAddStudentMutation } from '../../../redux/features/admin/userManagement.api';
-import { toast } from 'sonner';
-import UniImageInput from '../../../components/form/UniImageInput';
+} from '../../../../redux/features/admin/academicManagement.api';
+import { useAddStudentMutation } from '../../../../redux/features/admin/userManagement.api';
+import UniForm from '../../../../components/form/UniForm';
+import UniInput from '../../../../components/form/UniInput';
+import UniDatePicker from '../../../../components/form/UniDatePicker';
+import UniSelect from '../../../../components/form/UniSelect';
+import { bloodGroupOptions, genderOptions } from '../../../../constants/global';
+import UniImageInput from '../../../../components/form/UniImageInput';
 
-const studentDummyData = {
-  password: 'student123',
-  student: {
-    ////////////
-    name: {
-      firstName: 'Student',
-      middleName: ' Number',
-      lastName: ' 1',
-    },
-    gender: 'male',
-    dateOfBirth: '2000-10-31',
-    bloodGroup: 'O+',
-    ////////////////
-    email: 'student2@gmail.com',
-    contactNo: '1234567898',
-    emergencyContactNo: '1234567897',
-    presentAddress: '34 road, Dhaka-1230',
-    permanentAddress: '34 road, Dhaka-1230',
-    ///////////
-    guardian: {
-      fatherName: 'James Deo',
-      fatherOccupation: 'Engineer',
-      fatherContactNo: '2323433455664',
-      motherName: 'Mary Deo',
-      motherOccupation: 'Teacher',
-      motherContactNo: '34345453435',
-    },
-    localGuardian: {
-      name: 'Alice Johnson',
-      occupation: 'Doctor',
-      contactNo: '44444-44044',
-      address: '34 road, Dhaka-1230',
-    },
-    ///////////
-    admissionSemester: '66d4a9a94a5ff768b2ff90e0',
-    academicDepartment: '66d4a8af4a5ff768b2ff90dd',
-  },
-};
+// const studentDummyData = {
+//   password: 'student123',
+//   student: {
+//     ////////////
+//     name: {
+//       firstName: 'Student',
+//       middleName: ' Number',
+//       lastName: ' 1',
+//     },
+//     gender: 'male',
+//     dateOfBirth: '2000-10-31',
+//     bloodGroup: 'O+',
+//     ////////////////
+//     email: 'student2@gmail.com',
+//     contactNo: '1234567898',
+//     emergencyContactNo: '1234567897',
+//     presentAddress: '34 road, Dhaka-1230',
+//     permanentAddress: '34 road, Dhaka-1230',
+//     ///////////
+//     guardian: {
+//       fatherName: 'James Deo',
+//       fatherOccupation: 'Engineer',
+//       fatherContactNo: '2323433455664',
+//       motherName: 'Mary Deo',
+//       motherOccupation: 'Teacher',
+//       motherContactNo: '34345453435',
+//     },
+//     localGuardian: {
+//       name: 'Alice Johnson',
+//       occupation: 'Doctor',
+//       contactNo: '44444-44044',
+//       address: '34 road, Dhaka-1230',
+//     },
+//     ///////////
+//     admissionSemester: '66d4a9a94a5ff768b2ff90e0',
+//     academicDepartment: '66d4a8af4a5ff768b2ff90dd',
+//   },
+// };
 
 const studentDefaultValues = {
   ////////////
@@ -83,8 +85,8 @@ const studentDefaultValues = {
     address: '34 road, Dhaka-1230',
   },
   ///////////
-  // admissionSemester: '66d4a9a94a5ff768b2ff90e0',
-  // academicDepartment: '66d4a8af4a5ff768b2ff90dd',
+  admissionSemester: '66d4a9a94a5ff768b2ff90e0',
+  academicDepartment: '66d4a8af4a5ff768b2ff90dd',
 };
 
 export default function CreateStudent() {

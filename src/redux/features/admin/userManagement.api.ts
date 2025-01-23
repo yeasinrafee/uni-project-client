@@ -21,6 +21,26 @@ const userManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ['Student'],
+    }),
+
+    getSingleStudent: builder.query({
+      query: (id) => {
+        return { url: `/students/${id}`, method: 'GET' };
+      },
+      providesTags: ['singleStudent'],
+    }),
+
+    updateStudent: builder.mutation({
+      query: ({ updatedStudent, studentId }) => {
+        return {
+          url: `/students/${studentId}`,
+          method: 'PATCH',
+          body: updatedStudent,
+        };
+      },
+
+      invalidatesTags: ['Student', 'singleStudent'],
     }),
 
     addStudent: builder.mutation({
@@ -33,5 +53,9 @@ const userManagementApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllStudentsQuery, useAddStudentMutation } =
-  userManagementApi;
+export const {
+  useGetAllStudentsQuery,
+  useGetSingleStudentQuery,
+  useUpdateStudentMutation,
+  useAddStudentMutation,
+} = userManagementApi;
