@@ -1,16 +1,37 @@
-import { Button, Table } from 'antd';
+import { Button, Dropdown, Table, Tag } from 'antd';
 import type { TableColumnsType } from 'antd';
-import { TAcademicSemester } from '../../../types';
+import { TSemester } from '../../../types';
 // import { useState } from 'react';
-import { useGetAllRegisteredSemesterQuery } from '../../../redux/features/admin/courseManagement.api';
+import {
+  useGetAllRegisteredSemesterQuery,
+  useUpdateRegisteredSemesterMutation,
+} from '../../../redux/features/admin/courseManagement.api';
+import moment from 'moment';
+import { useState } from 'react';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 
-export type TTableData = Pick<
-  TAcademicSemester,
-  'name' | 'startMonth' | 'endMonth'
->;
+export type TTableData = Pick<TSemester, 'startDate' | 'endDate' | 'status'>;
+
+const items = [
+  {
+    label: 'Upcoming',
+    key: 'UPCOMING',
+  },
+  {
+    label: 'Ongoing',
+    key: 'ONGOING',
+  },
+  {
+    label: 'Ended',
+    key: 'ENDED',
+  },
+];
 
 export default function RegisteredSemester() {
   // const [params, setParams] = useState<TQueryPram[] | undefined>(undefined);
+  const [updateRegisteredSemester] = useUpdateRegisteredSemesterMutation();
+
+  const [semesterId, setSemesterId] = useState('');
 
   const { data: semesterData, isFetching } =
     useGetAllRegisteredSemesterQuery(undefined);
@@ -19,11 +40,27 @@ export default function RegisteredSemester() {
     ({ _id, academicSemester, startDate, endDate, status }) => ({
       key: _id,
       name: `${academicSemester.name} ${academicSemester.year}`,
-      startDate,
-      endDate,
+      startDate: moment(new Date(startDate)).format('DD/MM/YYYY'),
+      endDate: moment(new Date(endDate)).format('DD/MM/YYYY'),
       status,
     })
   );
+
+  const handleStatusUpdate: SubmitHandler<FieldValues> = (data) => {
+    const updatedData = {
+      id: semesterId,
+      data: {
+        status: data.key,
+      },
+    };
+
+    updateRegisteredSemester(updatedData);
+  };
+
+  const menuProps = {
+    items,
+    onClick: handleStatusUpdate,
+  };
 
   const columns: TableColumnsType<TTableData> = [
     {
@@ -36,6 +73,19 @@ export default function RegisteredSemester() {
       key: 'status',
       title: 'Status',
       dataIndex: 'status',
+      render: (item) => {
+        let color;
+        if (item === 'UPCOMING') {
+          color = 'blue';
+        }
+        if (item === 'ONGOING') {
+          color = 'green';
+        }
+        if (item === 'ENDED') {
+          color = 'red';
+        }
+        return <Tag color={color}>{item}</Tag>;
+      },
     },
     {
       key: 'startDate',
@@ -50,11 +100,11 @@ export default function RegisteredSemester() {
     {
       key: 'action',
       title: 'Action',
-      render: () => {
+      render: (item) => {
         return (
-          <div>
-            <Button>Update</Button>
-          </div>
+          <Dropdown menu={menuProps} trigger={['click']}>
+            <Button onClick={() => setSemesterId(item.key)}>Update</Button>
+          </Dropdown>
         );
       },
     },
