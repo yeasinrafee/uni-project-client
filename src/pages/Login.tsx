@@ -32,7 +32,11 @@ const Login = () => {
         duration: 2000,
       });
 
-      navigate(`/${user.role}/dashboard`);
+      if (res?.data?.needsPasswordChange) {
+        navigate(`/change-password`);
+      } else {
+        navigate(`/${user.role}/dashboard`);
+      }
     } catch (err) {
       toast.error('Something went wrong!', {
         id: toastId,
