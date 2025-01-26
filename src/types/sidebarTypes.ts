@@ -19,3 +19,10 @@ export type TSidebarItem =
       children?: TSidebarItem[];
     }
   | undefined;
+
+export type TUserPath = {
+  name?: string;
+  path?: string;
+  element?: ReactNode;
+  children?: TUserPath[];
+};
