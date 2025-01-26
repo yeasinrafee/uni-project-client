@@ -19,7 +19,6 @@ export default function Courses() {
   // const [params, setParams] = useState<TQueryPram[] | undefined>(undefined);
 
   const { data: courseData, isFetching } = useGetAllCoursesQuery(undefined);
-  console.log(courseData);
 
   const tableData = courseData?.data?.map(({ _id, title, prefix, code }) => ({
     key: _id,
@@ -107,13 +106,13 @@ const AddFacultyModal = ({ facultyInfo }) => {
     setIsModalOpen(false);
   };
 
-  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const facultyData = {
       courseId: facultyInfo.key,
       data,
     };
 
-    const res = assignFaculties(facultyData);
+    const res = await assignFaculties(facultyData);
     console.log(res);
   };
 

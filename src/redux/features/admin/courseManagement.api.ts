@@ -55,16 +55,13 @@ const courseManagementApi = baseApi.injectEndpoints({
             params.append(item.name, item.value as string);
           });
         }
-
         return {
           url: '/courses',
           method: 'GET',
           params: params,
         };
       },
-
       providesTags: ['courses'],
-
       transformResponse: (response: TResponseRedux<any>) => {
         return {
           data: response.data,
@@ -90,6 +87,22 @@ const courseManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['courses'],
     }),
+
+    getCourseFaculties: builder.query({
+      query: (id) => {
+        return {
+          url: `/courses/${id}/get-faculties`,
+          method: 'GET',
+        };
+      },
+      providesTags: ['semester'],
+      transformResponse: (response: TResponseRedux<TSemester[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
   }),
 });
 
@@ -100,4 +113,5 @@ export const {
   useGetAllCoursesQuery,
   useAddCourseMutation,
   useAssignFacultiesMutation,
+  useGetCourseFacultiesQuery,
 } = courseManagementApi;

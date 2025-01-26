@@ -13,6 +13,8 @@ export const monthNames = [
   'December',
 ];
 
+export const weeks = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
 export const genderNames = ['male', 'female', 'others'];
 
 export const bloodGroupNames = [
@@ -39,4 +41,9 @@ export const genderOptions = genderNames.map((gender) => ({
 export const bloodGroupOptions = bloodGroupNames.map((bloodGroup) => ({
   value: bloodGroup,
   label: bloodGroup,
+}));
+
+export const weekOptions = weeks.map((week) => ({
+  value: week,
+  label: week,
 }));
