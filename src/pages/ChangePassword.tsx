@@ -14,7 +14,6 @@ export default function ChangePassword() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     const res = (await changePassword(data)) as TResponse<any>;
 
     if (res?.data?.success) {
