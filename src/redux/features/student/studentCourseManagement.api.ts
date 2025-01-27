@@ -37,8 +37,36 @@ const studentCourseApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['offeredCourse'],
     }),
+
+    getAllEnrolledCourses: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: TQueryPram) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: '/enrolled-courses/my-enrolled-course',
+          method: 'GET',
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: ['offeredCourse'],
+    }),
   }),
 });
 
-export const { useGetAllOfferedCoursesQuery, useEnrolCourseMutation } =
-  studentCourseApi;
+export const {
+  useGetAllOfferedCoursesQuery,
+  useEnrolCourseMutation,
+  useGetAllEnrolledCoursesQuery,
+} = studentCourseApi;
